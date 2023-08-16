@@ -97,7 +97,7 @@ bool isRbusEnabled()
 	{
 		isRbus = false;
 	}
-	WebcfgDebug("Webconfig RBUS mode active status = %s\n", isRbus ? "true":"false");
+	WebcfgInfo("Webconfig RBUS mode active status = %s\n", isRbus ? "true":"false");
 	return isRbus;
 }
 
