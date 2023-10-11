@@ -285,7 +285,7 @@ target_link_libraries (test_multipart_unittest gcov -Wl,--no-as-needed )
 #-------------------------------------------------------------------------------
 if (WEBCONFIG_BIN_SUPPORT)
 add_test(NAME test_rbus_fr COMMAND ${MEMORY_CHECK} ./test_rbus_fr)
-add_executable(test_rbus_fr test_rbus_fr.c ../src/webcfg_rbus.c ../src/webcfg_wanhandle.c)
+add_executable(test_rbus_fr test_rbus_fr.c ../src/webcfg_rbus.c ../src/webcfg_wanhandle.c ../src/webcfg_db.c ../src/webcfg_multipart.c ../src/webcfg_generic_pc.c)
 target_link_libraries (test_rbus_fr -lcunit -lwrp-c -lcimplog -lmsgpackc -lcurl -lpthread  -lm -luuid -ltrower-base64 -lwdmp-c -lcjson  -lrbus)
 
 target_link_libraries (test_rbus_fr gcov -Wl,--no-as-needed )
