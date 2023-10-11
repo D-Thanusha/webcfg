@@ -34,50 +34,49 @@
 #include "../src/webcfg_helpers.h"
 #include "../src/webcfg_multipart.h"
 #include "../src/webcfg_param.h"
+#include "../src/webcfg_generic.h"
 #define FILE_URL "/tmp/webcfg_url"
 
 #define UNUSED(x) (void )(x)
 
+rbusHandle_t handle;
 extern rbusHandle_t rbus_handle;
 pthread_mutex_t sync_mutex=PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t sync_condition=PTHREAD_COND_INITIALIZER;
 
-/*multipartdocs_t *get_global_mp(void)
-{
-    return NULL;
-}*/
-
 bool get_webcfgReady()
 {
-    return true;
+	return true;
 }
 
 bool get_maintenanceSync()
 {
-    return false;
+	return false;
 }
+
 void set_global_webcfg_forcedsync_needed(int value)
 {
-   UNUSED(value);
+	UNUSED(value);
 }
 
 int get_global_webcfg_forcedsync_needed()
 {
-    return false;
+	return false;
 }
 
 void set_global_webcfg_forcedsync_started(int value)
 {
-    UNUSED(value);
+	UNUSED(value);
 }
 
 int get_global_webcfg_forcedsync_started()
 {
-    return false;
+	return false;
 }
+
 void set_global_supplementarySync(int value)
 {
-    UNUSED(value);
+	UNUSED(value);
 }
 
 int get_global_supplementarySync()
@@ -87,73 +86,37 @@ int get_global_supplementarySync()
 
 int Get_Supplementary_URL( char *name, char *pString)
 {
-    UNUSED(name);
-    UNUSED(pString);
-    return 0;
+	UNUSED(name);
+ 	UNUSED(pString);
+ 	return 0;
 }
 
 int Set_Supplementary_URL( char *name, char *pString)
 {
-    UNUSED(name);
-    UNUSED(pString);
-    return 0;
+ 	UNUSED(name);
+ 	UNUSED(pString);
+ 	return 0;
 }
+
 pthread_mutex_t *get_global_sync_mutex(void)
 {
-    return &sync_mutex;
+	return &sync_mutex;
 }
+
 bool get_global_shutdown()
 {
 	return false;
 }
+
 void set_global_shutdown(bool shutdown)
 {
 	UNUSED(shutdown);
 }
+
 pthread_t *get_global_mpThreadId(void)
 {
 	return NULL;
 }
-/*webconfig_db_data_t * get_global_db_node(void)
-{
-	return NULL;
-}
-WEBCFG_STATUS updateDBlist(char *docname, uint32_t version,char *rootstr)
-{
-	UNUSED(docname);
-	UNUSED(version);
-	UNUSED(rootstr);
-	return 0;
-}
-
-int get_successDocCount()
-{
-	return 0;
-}
-
-WEBCFG_STATUS addNewDocEntry(size_t count)
-{
-	UNUSED(count);
-	return 0;
-}
-
-WEBCFG_STATUS updateTmpList(webconfig_tmp_data_t *temp, char *docname, uint32_t version, char *status, char *error_details, uint16_t error_code, uint16_t trans_id, int retry)
-{
-	UNUSED(temp);
-	UNUSED(docname);
-	UNUSED(version);
-	UNUSED(error_details);
-	UNUSED(error_code);
-	UNUSED(trans_id);
-	UNUSED(retry);
-	return 0;
-}
-
-webconfig_tmp_data_t * getTmpNode(char *docname)
-{
-	UNUSED(docname);
-	return NULL;
-}*/
 
 int rbus_StoreValueIntoDB(char *paramName, char *value)
 {
@@ -162,6 +125,7 @@ int rbus_StoreValueIntoDB(char *paramName, char *value)
 	UNUSED(value);
 	return 0;
 }
+
 int rbus_GetValueFromDB( char* paramName, char** paramValue)
 {
 	WebcfgDebug("Inside rbus_GetValueFromDB weak fn\n");
@@ -169,53 +133,54 @@ int rbus_GetValueFromDB( char* paramName, char** paramValue)
 	*paramValue =strdup("true");
 	return 0;
 }
+
 void webcfgStrncpy(char *destStr, const char *srcStr, size_t destSize)
 {
-   strncpy(destStr, srcStr, destSize-1);
-   destStr[destSize-1] = '\0';
+	strncpy(destStr, srcStr, destSize-1);
+	destStr[destSize-1] = '\0';
 }
+
 WDMP_STATUS mapStatus(int ret)
 {
 	if(isRbusEnabled())
 	{
 		switch (ret)
 		{
-			case CCSP_Msg_Bus_OK:
+	    		case CCSP_Msg_Bus_OK:
 				return WDMP_SUCCESS;
-			case CCSP_Msg_BUS_TIMEOUT:
+	    		case CCSP_Msg_BUS_TIMEOUT:
 				return WDMP_ERR_TIMEOUT;
-			case CCSP_ERR_INVALID_PARAMETER_VALUE:
-				return WDMP_ERR_INVALID_PARAMETER_VALUE;
-			case CCSP_ERR_UNSUPPORTED_NAMESPACE:
+	    		case CCSP_ERR_INVALID_PARAMETER_VALUE:
+	        		return WDMP_ERR_INVALID_PARAMETER_VALUE;
+	    		case CCSP_ERR_UNSUPPORTED_NAMESPACE:
 				return WDMP_ERR_UNSUPPORTED_NAMESPACE;
-			default:
-			return WDMP_FAILURE;
+	    		default:
+				return WDMP_FAILURE;
 		}
-	}
-return ret;
+    	}
+    	return ret;
 }
+
 void webcfgCallback(char *Info, void* user_data)
 {
 	UNUSED(Info);
 	UNUSED(user_data);
 }
+
 pthread_cond_t *get_global_sync_condition(void)
 {
-    return &sync_condition;
+	return &sync_condition;
 }
+
 bool get_bootSync()
 {
-    return false;
+	return false;
 }
+
 void initWebConfigMultipartTask(unsigned long status)
 {
 	UNUSED(status);
 }
-
-/*char * get_DB_BLOB_base64()
-{
-	return NULL;
-}*/
 
 void initEventHandlingTask()
 {
@@ -234,9 +199,9 @@ char * getsupportedVersion()
 ssize_t webcfgdb_pack( webconfig_db_data_t *packData, void **data, size_t count )
 {
 	UNUSED(packData);
-	UNUSED(data);
-	UNUSED(count);
-	return 0;
+    	UNUSED(data);
+    	UNUSED(count);
+    	return 0;
 }
 
 ssize_t webcfgdb_blob_pack(webconfig_db_data_t *webcfgdb, webconfig_tmp_data_t * webcfgtemp, void **data)
@@ -260,8 +225,6 @@ void* helper_convert( const void *buf, size_t len,
 	UNUSED(wrapper);
 	UNUSED(expect_type);
 	UNUSED(optional);
-	//UNUSED(process);
-	//UNUSED(destroy);
 	return p;
 }
 
@@ -383,6 +346,8 @@ WEBCFG_STATUS retryMultipartSubdoc(webconfig_tmp_data_t *docNode, char *docName)
 /*----------------------------------------------------------------------------*/
 /*                                   Tests                                    */
 /*----------------------------------------------------------------------------*/
+
+// Test cases for set_rbus_ForceSync & get_rbus_ForceSync
 void test_setForceSync()
 {
 	int session_status = 0;
@@ -459,8 +424,8 @@ void test_isRbusInitialized_success()
 {
 	webconfigRbusInit("componentName");
 	bool result = isRbusInitialized();
-	webpaRbus_Uninit();
 	CU_ASSERT_TRUE(result);
+	webpaRbus_Uninit();
 }
 
 void test_isRbusInitialized_failure()
@@ -485,195 +450,225 @@ void test_webpaRbus_Uninit()
 // Test case for webcfgRfcSetHandler & webcfgRfcGetHandler
 void test_webcfgRfcSet_GetHandler(void)
 {
-    webconfigRbusInit("componentName");
-    regWebConfigDataModel();
+	webconfigRbusInit("providerComponent");
+    	regWebConfigDataModel();
+    
+    	int res = rbus_open(&handle, "consumerComponent");
+    	if(res != RBUS_ERROR_SUCCESS)
+    	{
+		CU_FAIL("rbus_open failed for consumerComponent");
+    	}
 
-    rbusValue_t value;
-    rbusValue_Init(&value);
-    rbusValue_SetBoolean(value, true);
+    	rbusValue_t value;
+    	rbusValue_Init(&value);
+    	rbusValue_SetBoolean(value, true);
 
-    rbusSetOptions_t opts;
-    opts.commit = true;
+    	rbusSetOptions_t opts;
+    	opts.commit = true;
 
-    rbusError_t rc = rbus_set(get_global_rbus_handle(), WEBCFG_RFC_PARAM, value, &opts);
-    CU_ASSERT_EQUAL(rc, RBUS_ERROR_SUCCESS);
+    	rbusError_t rc = rbus_set(handle, WEBCFG_RFC_PARAM, value, &opts);
+    	CU_ASSERT_EQUAL(rc, RBUS_ERROR_SUCCESS);
 
-    rbusError_t rc_get = rbus_get(get_global_rbus_handle(), WEBCFG_RFC_PARAM, &value);
-    CU_ASSERT_EQUAL(rc_get, RBUS_ERROR_SUCCESS);
-    bool retrievedValue = false;
-    retrievedValue = rbusValue_GetBoolean(value);
-    CU_ASSERT_TRUE(retrievedValue);
-    rbusValue_Release(value);
-    webpaRbus_Uninit();
+    	rbusError_t rc_get = rbus_get(handle, WEBCFG_RFC_PARAM, &value);
+    	CU_ASSERT_EQUAL(rc_get, RBUS_ERROR_SUCCESS);
+    	bool retrievedValue = false;
+    	retrievedValue = rbusValue_GetBoolean(value);
+    	CU_ASSERT_TRUE(retrievedValue);
+    	rbusValue_Release(value);
+    	rbus_close(handle);
+    	webpaRbus_Uninit();
 }
 
 // Test case for webcfgDataSetHandler & webcfgDataGetHandler
 void test_webcfgDataSet_GetHandler(void)
 {
-    webconfigRbusInit("componentName");
-    regWebConfigDataModel();
+	webconfigRbusInit("providerComponent");
+    	regWebConfigDataModel();
 
-    rbusValue_t value;
-    rbusValue_Init(&value);
-    rbusValue_SetString(value, "Data123");
+    	int res = rbus_open(&handle, "consumerComponent");
+    	if(res != RBUS_ERROR_SUCCESS)
+    	{
+		CU_FAIL("rbus_open failed for consumerComponent");
+    	}
 
-    rbusSetOptions_t opts;
-    opts.commit = true;
+    	rbusValue_t value;
+    	rbusValue_Init(&value);
+    	rbusValue_SetString(value, "Data123");
 
-    rbusError_t rc = rbus_set(get_global_rbus_handle(), WEBCFG_DATA_PARAM, value, &opts);
-    CU_ASSERT_EQUAL(rc, RBUS_ERROR_ACCESS_NOT_ALLOWED);
+    	rbusSetOptions_t opts;
+    	opts.commit = true;
 
-    rbusError_t rc_get = rbus_get(get_global_rbus_handle(), WEBCFG_DATA_PARAM, &value);
-    CU_ASSERT_EQUAL(rc_get, RBUS_ERROR_SUCCESS);
-    const char* retrievedValue = NULL;
-    retrievedValue = rbusValue_GetString(value, NULL);
-    CU_ASSERT_STRING_EQUAL(retrievedValue, "");
-    rbusValue_Release(value);
-    webpaRbus_Uninit();
+    	rbusError_t rc = rbus_set(handle, WEBCFG_DATA_PARAM, value, &opts);
+    	CU_ASSERT_EQUAL(rc, RBUS_ERROR_ACCESS_NOT_ALLOWED);
+
+    	rbusError_t rc_get = rbus_get(handle, WEBCFG_DATA_PARAM, &value);
+    	CU_ASSERT_EQUAL(rc_get, RBUS_ERROR_SUCCESS);
+    	const char* retrievedValue = NULL;
+    	retrievedValue = rbusValue_GetString(value, NULL);
+    	CU_ASSERT_STRING_EQUAL(retrievedValue, "");
+    	rbusValue_Release(value);
+    	rbus_close(handle);
+    	webpaRbus_Uninit();
 }
 
 // Test case for webcfgSupportedDocsSetHandler & webcfgSupportedDocsGetHandler
 void test_webcfgSupportedDocsSet_GetHandler(void)
 {
-    webconfigRbusInit("componentName");
-    regWebConfigDataModel();
+	webconfigRbusInit("providerComponent");
+    	regWebConfigDataModel();
 
-    rbusValue_t value;
-    rbusValue_Init(&value);
-    rbusValue_SetString(value, "Doc1");
+    	int res = rbus_open(&handle, "consumerComponent");
+    	if(res != RBUS_ERROR_SUCCESS)
+    	{
+		CU_FAIL("rbus_open failed for consumerComponent");
+    	}
 
-    rbusSetOptions_t opts;
-    opts.commit = true;
+    	rbusValue_t value;
+    	rbusValue_Init(&value);
+    	rbusValue_SetString(value, "Doc1");
 
-    rbusError_t rc = rbus_set(get_global_rbus_handle(), WEBCFG_SUPPORTED_DOCS_PARAM, value, &opts);
-    CU_ASSERT_EQUAL(rc, RBUS_ERROR_ACCESS_NOT_ALLOWED);
+    	rbusSetOptions_t opts;
+    	opts.commit = true;
 
-    rbusError_t rc_get = rbus_get(get_global_rbus_handle(), WEBCFG_SUPPORTED_DOCS_PARAM, &value);
-    CU_ASSERT_EQUAL(rc_get, RBUS_ERROR_SUCCESS);
-    const char* retrievedValue = NULL;
-    retrievedValue = rbusValue_GetString(value, NULL);
-    CU_ASSERT_STRING_EQUAL(retrievedValue, "");
-    rbusValue_Release(value);
-    webpaRbus_Uninit();
+    	rbusError_t rc = rbus_set(handle, WEBCFG_SUPPORTED_DOCS_PARAM, value, &opts);
+    	CU_ASSERT_EQUAL(rc, RBUS_ERROR_ACCESS_NOT_ALLOWED);
+
+    	rbusError_t rc_get = rbus_get(handle, WEBCFG_SUPPORTED_DOCS_PARAM, &value);
+    	CU_ASSERT_EQUAL(rc_get, RBUS_ERROR_SUCCESS);
+    	const char* retrievedValue = NULL;
+    	retrievedValue = rbusValue_GetString(value, NULL);
+    	CU_ASSERT_STRING_EQUAL(retrievedValue, "");
+    	rbusValue_Release(value);
+    	rbus_close(handle);
+    	webpaRbus_Uninit();
 }
 
 //Test case for webcfgSupportedVersionSetHandler & webcfgSupportedVersionGetHandler
 void test_webcfgSupportedVersionSet_GetHandler(void)
 {
-    webconfigRbusInit("componentName");
-    regWebConfigDataModel();
+	webconfigRbusInit("providerComponent");
+    	regWebConfigDataModel();
 
-    rbusValue_t value;
-    rbusValue_Init(&value);
-    rbusValue_SetString(value, "version123");
+    	int res = rbus_open(&handle, "consumerComponent");
+    	if(res != RBUS_ERROR_SUCCESS)
+    	{
+		CU_FAIL("rbus_open failed for consumerComponent");
+    	}
 
-    rbusSetOptions_t opts;
-    opts.commit = true;
+    	rbusValue_t value;
+    	rbusValue_Init(&value);
+    	rbusValue_SetString(value, "version123");
 
-    rbusError_t rc = rbus_set(get_global_rbus_handle(), WEBCFG_SUPPORTED_VERSION_PARAM, value, &opts);
-    CU_ASSERT_EQUAL(rc, RBUS_ERROR_ACCESS_NOT_ALLOWED);
+    	rbusSetOptions_t opts;
+    	opts.commit = true;
 
-    rbusError_t rc_get = rbus_get(get_global_rbus_handle(), WEBCFG_SUPPORTED_VERSION_PARAM, &value);
-    CU_ASSERT_EQUAL(rc_get, RBUS_ERROR_SUCCESS);
-    const char* retrievedValue = NULL;
-    retrievedValue = rbusValue_GetString(value, NULL);
-    CU_ASSERT_STRING_EQUAL(retrievedValue, "");
-    rbusValue_Release(value);
-    webpaRbus_Uninit();
-}
+    	rbusError_t rc = rbus_set(handle, WEBCFG_SUPPORTED_VERSION_PARAM, value, &opts);
+    	CU_ASSERT_EQUAL(rc, RBUS_ERROR_ACCESS_NOT_ALLOWED);
 
-static void publishEventSuccessCallbackHandler(
-    rbusHandle_t handle,
-    rbusEvent_t const* event,
-    rbusEventSubscription_t* subscription)
-{
-    rbusValue_t incoming_value;
-
-    incoming_value = rbusObject_GetValue(event->data, "value");
-
-    if(incoming_value)
-    {
-        char * inVal = (char *)rbusValue_GetString(incoming_value, NULL);
-	WebcfgInfo("inVal is %s\n", inVal);
-	WebcfgInfo("rbusEvent_OnPublish success callback received successfully with message\n");
-	CU_ASSERT(1);
-    }
-    (void)handle;
+    	rbusError_t rc_get = rbus_get(handle, WEBCFG_SUPPORTED_VERSION_PARAM, &value);
+    	CU_ASSERT_EQUAL(rc_get, RBUS_ERROR_SUCCESS);
+    	const char* retrievedValue = NULL;
+    	retrievedValue = rbusValue_GetString(value, NULL);
+    	CU_ASSERT_STRING_EQUAL(retrievedValue, "");
+    	rbusValue_Release(value);
+    	rbus_close(handle);
+    	webpaRbus_Uninit();
 }
 
 // Test case for webcfgUrlSetHandler & webcfgUrlGetHandler
 void test_webcfgUrlSet_GetHandler(void)
 {
-    webconfigRbusInit("componentName");
-    regWebConfigDataModel();
+	webconfigRbusInit("providerComponent");
+    	regWebConfigDataModel();
 
-    rbusValue_t value;
-    rbusValue_Init(&value);
-    rbusValue_SetString(value, "webcfgurl");
+    	int res = rbus_open(&handle, "consumerComponent");
+    	if(res != RBUS_ERROR_SUCCESS)
+    	{
+		CU_FAIL("rbus_open failed for consumerComponent");
+    	}
 
-    rbusSetOptions_t opts;
-    opts.commit = true;
+    	rbusValue_t value;
+    	rbusValue_Init(&value);
+    	rbusValue_SetString(value, "webcfgurl");
 
-    rbusError_t rc = rbus_set(get_global_rbus_handle(), WEBCFG_URL_PARAM, value, &opts);
-    CU_ASSERT_EQUAL(rc, RBUS_ERROR_SUCCESS);
+    	rbusSetOptions_t opts;
+    	opts.commit = true;
 
-    rbusError_t rc_get = rbus_get(get_global_rbus_handle(), WEBCFG_URL_PARAM, &value);
-    CU_ASSERT_EQUAL(rc_get, RBUS_ERROR_SUCCESS);
-    const char* retrievedValue = NULL;
-    retrievedValue = rbusValue_GetString(value, NULL);
-    CU_ASSERT_STRING_EQUAL(retrievedValue, "webcfgurl");
-    rbusValue_Release(value);
-    webpaRbus_Uninit();
+    	rbusError_t rc = rbus_set(handle, WEBCFG_URL_PARAM, value, &opts);
+    	CU_ASSERT_EQUAL(rc, RBUS_ERROR_SUCCESS);
+
+    	rbusError_t rc_get = rbus_get(handle, WEBCFG_URL_PARAM, &value);
+    	CU_ASSERT_EQUAL(rc_get, RBUS_ERROR_SUCCESS);
+    	const char* retrievedValue = NULL;
+    	retrievedValue = rbusValue_GetString(value, NULL);
+    	CU_ASSERT_STRING_EQUAL(retrievedValue, "webcfgurl");
+    	rbusValue_Release(value);
+    	rbus_close(handle);
+    	webpaRbus_Uninit();
 }
 
 // Test case for webcfgTelemetrySetHandler & webcfgTelemetryGetHandler
 void test_webcfgTelemetrySet_GetHandler(void)
 {
-    webconfigRbusInit("componentName");
-    regWebConfigDataModel();
+    	webconfigRbusInit("providerComponent");
+    	regWebConfigDataModel();
 
-    rbusValue_t value;
-    rbusValue_Init(&value);
-    rbusValue_SetString(value, "telemetry");
+    	int res = rbus_open(&handle, "consumerComponent");
+    	if(res != RBUS_ERROR_SUCCESS)
+    	{
+		CU_FAIL("rbus_open failed for consumerComponent");
+    	}
 
-    rbusSetOptions_t opts;
-    opts.commit = true;
+    	rbusValue_t value;
+    	rbusValue_Init(&value);
+    	rbusValue_SetString(value, "telemetry");
 
-    rbusError_t rc = rbus_set(get_global_rbus_handle(), WEBCFG_SUPPLEMENTARY_TELEMETRY_PARAM, value, &opts);
-    CU_ASSERT_EQUAL(rc, RBUS_ERROR_SUCCESS);
+    	rbusSetOptions_t opts;
+    	opts.commit = true;
 
-    rbusError_t rc_get = rbus_get(get_global_rbus_handle(), WEBCFG_SUPPLEMENTARY_TELEMETRY_PARAM, &value);
-    CU_ASSERT_EQUAL(rc_get, RBUS_ERROR_SUCCESS);
-    const char* retrievedValue = NULL;
-    retrievedValue = rbusValue_GetString(value, NULL);
-    CU_ASSERT_STRING_EQUAL(retrievedValue, "telemetry");
-    rbusValue_Release(value);
-    webpaRbus_Uninit();
+    	rbusError_t rc = rbus_set(handle, WEBCFG_SUPPLEMENTARY_TELEMETRY_PARAM, value, &opts);
+    	CU_ASSERT_EQUAL(rc, RBUS_ERROR_SUCCESS);
+
+    	rbusError_t rc_get = rbus_get(handle, WEBCFG_SUPPLEMENTARY_TELEMETRY_PARAM, &value);
+    	CU_ASSERT_EQUAL(rc_get, RBUS_ERROR_SUCCESS);
+    	const char* retrievedValue = NULL;
+    	retrievedValue = rbusValue_GetString(value, NULL);
+    	CU_ASSERT_STRING_EQUAL(retrievedValue, "telemetry");
+    	rbusValue_Release(value);
+    	rbus_close(handle);
+    	webpaRbus_Uninit();
 }
 
 // Test case for webcfgFrSetHandler & webcfgFrGetHandler
 void test_webcfgFrSet_GetHandler(void)
 {
-    webconfigRbusInit("componentName");
-    regWebConfigDataModel();
+    	webconfigRbusInit("providerComponent");
+    	regWebConfigDataModel();
 
-    rbusValue_t value;
-    rbusValue_Init(&value);
-    rbusValue_SetString(value, "telemetry");
+    	int res = rbus_open(&handle, "consumerComponent");
+    	if(res != RBUS_ERROR_SUCCESS)
+    	{
+		CU_FAIL("rbus_open failed for consumerComponent");
+    	}
 
-    rbusSetOptions_t opts;
-    opts.commit = true;
+    	rbusValue_t value;
+    	rbusValue_Init(&value);
+    	rbusValue_SetString(value, "telemetry");
 
-    rbusError_t rc = rbus_set(get_global_rbus_handle(), WEBCFG_FORCESYNC_PARAM, value, &opts);
-    CU_ASSERT_EQUAL(rc, RBUS_ERROR_SUCCESS);
+    	rbusSetOptions_t opts;
+    	opts.commit = true;
 
-    rbusError_t rc_get = rbus_get(get_global_rbus_handle(), WEBCFG_FORCESYNC_PARAM, &value);
-    CU_ASSERT_EQUAL(rc_get, RBUS_ERROR_SUCCESS);
-    const char* retrievedValue = NULL;
-    retrievedValue = rbusValue_GetString(value, NULL);
-    CU_ASSERT_STRING_EQUAL(retrievedValue, "");
-    rbusValue_Release(value);
-    webpaRbus_Uninit();
+    	rbusError_t rc = rbus_set(handle, WEBCFG_FORCESYNC_PARAM, value, &opts);
+    	CU_ASSERT_EQUAL(rc, RBUS_ERROR_SUCCESS);
+
+    	rbusError_t rc_get = rbus_get(handle, WEBCFG_FORCESYNC_PARAM, &value);
+    	CU_ASSERT_EQUAL(rc_get, RBUS_ERROR_SUCCESS);
+    	const char* retrievedValue = NULL;
+    	retrievedValue = rbusValue_GetString(value, NULL);
+    	CU_ASSERT_STRING_EQUAL(retrievedValue, "");
+    	rbusValue_Release(value);
+    	rbus_close(handle);
+    	webpaRbus_Uninit();
 }
 
 // Test case for webcfgError_ToString
@@ -801,7 +796,7 @@ void test_mapRbusToCcspStatus()
 // Test case for regWebConfigDataModel
 void test_regWebConfigDataModel_success()
 {
-	webconfigRbusInit("componentName");
+	webconfigRbusInit("providerComponent");
 	WEBCFG_STATUS ret = regWebConfigDataModel();
 	CU_ASSERT_EQUAL(ret, WEBCFG_SUCCESS);
 }
@@ -816,7 +811,7 @@ void test_regWebConfigDataModel_failure()
 // Test case for registerRBUSEventElement
 void test_registerRBUSEventElement_success()
 {
-	webconfigRbusInit("componentName");
+	webconfigRbusInit("providerComponent");
 	rbusError_t ret = registerRBUSEventElement();
 	CU_ASSERT_EQUAL(ret, RBUS_ERROR_SUCCESS);		
 }
@@ -831,7 +826,7 @@ void test_registerRBUSEventElement_failure()
 //Test case for removeRBUSEventElement
 void test_removeRBUSEventElement_success()
 {
-	webconfigRbusInit("componentName");
+	webconfigRbusInit("providerComponent");
 	rbusError_t ret = removeRBUSEventElement();
 	CU_ASSERT_EQUAL(ret, RBUS_ERROR_SUCCESS);
 	webpaRbus_Uninit();
@@ -840,17 +835,17 @@ void test_removeRBUSEventElement_success()
 // Test case for waitForUpstreamEventSubscribe
 void test_waitForUpstreamEventSubscribe()
 {
-	waitForUpstreamEventSubscribe(10);
+	waitForUpstreamEventSubscribe(5);
 }
 
 // Test case for eventSubHandler
 void test_eventSubHandler()
 {
 	rbusError_t ret = RBUS_ERROR_BUS_ERROR;
-	ret = eventSubHandler(rbus_handle, RBUS_EVENT_ACTION_SUBSCRIBE, WEBCFG_UPSTREAM_EVENT, NULL, 0, false);
+	ret = eventSubHandler(handle, RBUS_EVENT_ACTION_SUBSCRIBE, WEBCFG_UPSTREAM_EVENT, NULL, 0, false);
 	CU_ASSERT_EQUAL(ret, 0);
 
-	ret = eventSubHandler(rbus_handle, RBUS_EVENT_ACTION_SUBSCRIBE, WEBCFG_SUBDOC_FORCERESET_PARAM, NULL, 0, false);
+	ret = eventSubHandler(handle, RBUS_EVENT_ACTION_SUBSCRIBE, WEBCFG_SUBDOC_FORCERESET_PARAM, NULL, 0, false);
 	CU_ASSERT_EQUAL(ret, 0);
 }
 
@@ -859,13 +854,13 @@ void test_resetEventSubHandler()
 {
 	bool autopublish = false;
 	rbusError_t ret = RBUS_ERROR_BUS_ERROR;
-	ret = resetEventSubHandler(rbus_handle, RBUS_EVENT_ACTION_SUBSCRIBE, WEBCFG_SUBDOC_FORCERESET_PARAM, NULL, 0, &autopublish);
+	ret = resetEventSubHandler(handle, RBUS_EVENT_ACTION_SUBSCRIBE, WEBCFG_SUBDOC_FORCERESET_PARAM, NULL, 0, &autopublish);
 	CU_ASSERT_EQUAL(ret, 0);
 
-	ret = resetEventSubHandler(rbus_handle, RBUS_EVENT_ACTION_SUBSCRIBE, WEBCFG_UPSTREAM_EVENT, NULL, 0, &autopublish);
+	ret = resetEventSubHandler(handle, RBUS_EVENT_ACTION_SUBSCRIBE, WEBCFG_UPSTREAM_EVENT, NULL, 0, &autopublish);
 	CU_ASSERT_EQUAL(ret, 0);
 
-	ret = resetEventSubHandler(rbus_handle, RBUS_EVENT_ACTION_UNSUBSCRIBE, WEBCFG_SUBDOC_FORCERESET_PARAM, NULL, 0, &autopublish);
+	ret = resetEventSubHandler(handle, RBUS_EVENT_ACTION_UNSUBSCRIBE, WEBCFG_SUBDOC_FORCERESET_PARAM, NULL, 0, &autopublish);
 	CU_ASSERT_EQUAL(ret, 0);
 }
 
@@ -887,17 +882,17 @@ void test_set_get_rbus_RfcEnable()
 // Test case for rbus_log_handler
 void test_rbus_log_handler()
 {
-    rbus_log_handler(0, "file1", 1, 0, "message1");
-    rbus_log_handler(1, "file2", 2, 0, "message2");
-    rbus_log_handler(2, "file3", 3, 0, "message3");
-    rbus_log_handler(3, "file4", 4, 0, "message4");
-    rbus_log_handler(4, "file5", 5, 0, "message5");
+    	rbus_log_handler(0, "file1", 1, 0, "message1");
+    	rbus_log_handler(1, "file2", 2, 0, "message2");
+    	rbus_log_handler(2, "file3", 3, 0, "message3");
+    	rbus_log_handler(3, "file4", 4, 0, "message4");
+    	rbus_log_handler(4, "file5", 5, 0, "message5");
 }
 
 // Test case for registerRbusLogger 
 void test_registerRbusLogger()
 {
-    registerRbusLogger();
+    	registerRbusLogger();
 }
  
 // Test case for set_global_webconfig_url
@@ -1041,19 +1036,26 @@ void test_parseForceSyncJson()
 // Test case for rbusWebcfgEventHandler
 void test_rbusWebcfgEventHandler()
 {	
-	webconfigRbusInit("componentName");
-	registerRBUSEventElement();
-    
-	rbusValue_t value;
+    	webconfigRbusInit("providerComponent");
+    	registerRBUSEventElement();
+ 
+    	int res = rbus_open(&handle, "consumerComponent");
+    	if(res != RBUS_ERROR_SUCCESS)
+    	{
+		CU_FAIL("rbus_open failed for consumerComponent");
+    	}   
+	
+    	rbusValue_t value;
     	rbusValue_Init(&value);
     	rbusValue_SetString(value, "eventhandler");
 
     	rbusSetOptions_t opts;
     	opts.commit = true;
 
-    	rbusError_t rc = rbus_set(get_global_rbus_handle(), WEBCFG_EVENT_NAME, value, &opts);
+    	rbusError_t rc = rbus_set(handle, WEBCFG_EVENT_NAME, value, &opts);
     	CU_ASSERT_EQUAL(rc, RBUS_ERROR_SUCCESS);
-	webpaRbus_Uninit();
+    	rbus_close(handle);
+    	webpaRbus_Uninit();
 }
 
 // Test case for fetchMpBlobData
@@ -1092,11 +1094,17 @@ void test_fetchMpBlobData()
 	CU_ASSERT_FATAL(NULL == get_global_mp());
 }
 
+//Test case for setFetchCachedBlobErrCode & fetchCachedBlobHandler
 void test_webcfg_util_method()
 {
-	webconfigRbusInit("componentName");
+	webconfigRbusInit("providerComponent");
 	regWebConfigDataModel();
 	int rc = 0;
+	int res = rbus_open(&handle, "consumerComponent");
+        if(res != RBUS_ERROR_SUCCESS)
+        {
+		CU_FAIL("rbus_open failed for consumerComponent");
+        } 
 
         rbusObject_t inParams;
     	rbusObject_t outParams;
@@ -1111,7 +1119,7 @@ void test_webcfg_util_method()
     	rbusValue_Release(value);
 
 	//Subdoc value is empty
-    	rc = rbusMethod_Invoke(rbus_handle, WEBCFG_UTIL_METHOD, inParams, &outParams);
+    	rc = rbusMethod_Invoke(handle, WEBCFG_UTIL_METHOD, inParams, &outParams);
     	CU_ASSERT_EQUAL(rc, RBUS_ERROR_BUS_ERROR);
 	checkParams = rbusObject_GetProperties(outParams);
 	while(checkParams)
@@ -1144,7 +1152,7 @@ void test_webcfg_util_method()
     	rbusValue_Release(value);
 
 	//Multipart Cache is NULL
-    	rc = rbusMethod_Invoke(rbus_handle, WEBCFG_UTIL_METHOD, inParams, &outParams);
+    	rc = rbusMethod_Invoke(handle, WEBCFG_UTIL_METHOD, inParams, &outParams);
     	CU_ASSERT_EQUAL(rc, RBUS_ERROR_BUS_ERROR);
 	checkParams = rbusObject_GetProperties(outParams);
 	while(checkParams)
@@ -1186,7 +1194,7 @@ void test_webcfg_util_method()
     	rbusObject_SetValue(inParams, "subdocName", value);
     	rbusValue_Release(value);
 	//subdoc is not found
-    	rc = rbusMethod_Invoke(rbus_handle, WEBCFG_UTIL_METHOD, inParams, &outParams);
+    	rc = rbusMethod_Invoke(handle, WEBCFG_UTIL_METHOD, inParams, &outParams);
     	CU_ASSERT_EQUAL(rc, RBUS_ERROR_BUS_ERROR);
 	checkParams = rbusObject_GetProperties(outParams);
 	while(checkParams)
@@ -1218,7 +1226,7 @@ void test_webcfg_util_method()
     	rbusObject_SetValue(inParams, "subdocName", value);
     	rbusValue_Release(value);
 	//successcase
-    	rc = rbusMethod_Invoke(rbus_handle, WEBCFG_UTIL_METHOD, inParams, &outParams);
+    	rc = rbusMethod_Invoke(handle, WEBCFG_UTIL_METHOD, inParams, &outParams);
     	CU_ASSERT_EQUAL(rc, RBUS_ERROR_SUCCESS);
 	checkParams = rbusObject_GetProperties(outParams);
 	while(checkParams)
@@ -1246,101 +1254,162 @@ void test_webcfg_util_method()
 
 	set_global_mp(NULL);
 	CU_ASSERT_FATAL(NULL == get_global_mp());
+	rbus_close(handle);
 	webpaRbus_Uninit();
 }
 
-// Test case for webcfgSubdocForceResetSetHandler & webcfgSubdocForceResetGetHandler
+static void publishEventSuccessCallbackHandler(
+    rbusHandle_t handle,
+    rbusEvent_t const* event,
+    rbusEventSubscription_t* subscription)
+{
+    	rbusValue_t incoming_value;
+
+    	incoming_value = rbusObject_GetValue(event->data, "value");
+
+    	if(incoming_value)
+    	{
+        	char * inVal = (char *)rbusValue_GetString(incoming_value, NULL);
+		WebcfgInfo("inVal is %s\n", inVal);
+		WebcfgInfo("rbusEvent_OnPublish webcfgSubdocForceReset success callback received successfully with message - %s\n", inVal);
+		CU_ASSERT(1);
+    	}
+    	(void)handle;
+}
+
+// Test case for webcfgSubdocForceResetSetHandler, webcfgSubdocForceResetGetHandler & publishSubdocResetEvent
 void test_webcfgSubdocForceResetSet_GetHandler(void)
 {
-    webconfigRbusInit("componentName");
-    regWebConfigDataModel();
-    
-    webconfig_db_data_t *wd1, *wd2, *wd3;
-    wd1 = (webconfig_db_data_t *) malloc (sizeof(webconfig_db_data_t));
-    CU_ASSERT_PTR_NOT_NULL(wd1);
-    wd1->name = strdup("root");
-    wd1->version = 567843562;
-    wd1->root_string = strdup("rootstring");
-    wd1->next=NULL;
-    addToDBList(wd1);
-    int n1 = get_successDocCount();
-    CU_ASSERT_EQUAL(1,n1);
-    wd2 = (webconfig_db_data_t *) malloc (sizeof(webconfig_db_data_t));
-    CU_ASSERT_PTR_NOT_NULL(wd1);
-    wd2->name = strdup("doc1");
-    wd2->version = 43843534;
-    wd2->root_string = strdup("portmapping");
-    wd2->next=NULL;
-    addToDBList(wd2);
-    int n2 = get_successDocCount();
-    CU_ASSERT_EQUAL(2,n2);
-    wd3 = (webconfig_db_data_t *) malloc (sizeof(webconfig_db_data_t));
-    CU_ASSERT_PTR_NOT_NULL(wd1);
-    wd3->name = strdup("doc2");
-    wd3->version = 264343534;
-    wd3->root_string = strdup("wan");
-    wd3->next=NULL;
-    addToDBList(wd3);
-    int n3 = get_successDocCount();
-    CU_ASSERT_EQUAL(3,n3);
-    CU_ASSERT_FATAL( NULL != get_global_db_node());
+    	webconfigRbusInit("providerComponent");
+    	regWebConfigDataModel();
 
-    int ret = rbusEvent_Subscribe(get_global_rbus_handle(), WEBCFG_SUBDOC_FORCERESET_PARAM, publishEventSuccessCallbackHandler, NULL, 0);
-    if(ret != RBUS_ERROR_SUCCESS)
+    	int res = rbus_open(&handle, "consumerComponent");
+    	if(res != RBUS_ERROR_SUCCESS)
+	{
+		CU_FAIL("rbus_open failed for consumerComponent");
+	}
+
+    	webconfig_db_data_t *wd1, *wd2, *wd3;
+    	wd1 = (webconfig_db_data_t *) malloc (sizeof(webconfig_db_data_t));
+    	CU_ASSERT_PTR_NOT_NULL(wd1);
+    	wd1->name = strdup("root");
+    	wd1->version = 567843562;
+    	wd1->root_string = strdup("rootstring");
+    	wd1->next=NULL;
+    	addToDBList(wd1);
+    	int n1 = get_successDocCount();
+    	CU_ASSERT_EQUAL(1,n1);
+    	wd2 = (webconfig_db_data_t *) malloc (sizeof(webconfig_db_data_t));
+    	CU_ASSERT_PTR_NOT_NULL(wd2);
+    	wd2->name = strdup("doc1");
+    	wd2->version = 43843534;
+    	wd2->root_string = strdup("portmapping");
+    	wd2->next=NULL;
+    	addToDBList(wd2);
+    	int n2 = get_successDocCount();
+    	CU_ASSERT_EQUAL(2,n2);
+    	wd3 = (webconfig_db_data_t *) malloc (sizeof(webconfig_db_data_t));
+    	CU_ASSERT_PTR_NOT_NULL(wd3);
+    	wd3->name = strdup("doc2");
+    	wd3->version = 264343534;
+    	wd3->root_string = strdup("wan");
+    	wd3->next=NULL;
+    	addToDBList(wd3);
+    	int n3 = get_successDocCount();
+    	CU_ASSERT_EQUAL(3,n3);
+    	CU_ASSERT_FATAL( NULL != get_global_db_node());
+
+    	int ret = rbusEvent_Subscribe(handle, WEBCFG_SUBDOC_FORCERESET_PARAM, publishEventSuccessCallbackHandler, NULL, 0);
+    	if(ret != RBUS_ERROR_SUCCESS)
+	{
 		CU_FAIL("subscribe_to_event onsubscribe event failed");
+	}
 
-    rbusValue_t value;
-    rbusValue_Init(&value);
-    rbusValue_SetString(value, "doc1,doc2");
+    	rbusValue_t value;
+    	rbusValue_Init(&value);
+    	rbusValue_SetString(value, "doc1,doc2");
 
-    rbusSetOptions_t opts;
-    opts.commit = true;
+    	rbusSetOptions_t opts;
+    	opts.commit = true;
 
-    rbusError_t rc = rbus_set(get_global_rbus_handle(), WEBCFG_SUBDOC_FORCERESET_PARAM, value, &opts);
-    CU_ASSERT_EQUAL(rc, RBUS_ERROR_SUCCESS);
+    	rbusError_t rc = rbus_set(handle, WEBCFG_SUBDOC_FORCERESET_PARAM, value, &opts);
+    	CU_ASSERT_EQUAL(rc, RBUS_ERROR_SUCCESS);
 
-    rbusError_t rc_get = rbus_get(get_global_rbus_handle(), WEBCFG_SUBDOC_FORCERESET_PARAM, &value);
-    CU_ASSERT_EQUAL(rc_get, RBUS_ERROR_SUCCESS);
-    const char* retrievedValue = NULL;
-    retrievedValue = rbusValue_GetString(value, NULL);
-    CU_ASSERT_STRING_EQUAL(retrievedValue, "");
-    rbusValue_Release(value);
-    webcfgdb_destroy(wd1);
-    webcfgdb_destroy(wd2);
-    webcfgdb_destroy(wd3);
-    reset_successDocCount();
-    reset_db_node();
-    CU_ASSERT_FATAL( NULL == get_global_db_node());
-    /*rbusError_t res = rbusEvent_Unsubscribe(get_global_rbus_handle(), WEBCFG_SUBDOC_FORCERESET_PARAM);
-    CU_ASSERT_EQUAL(res, RBUS_ERROR_SUCCESS);*/
-    webpaRbus_Uninit();
+    	rbusError_t rc_get = rbus_get(handle, WEBCFG_SUBDOC_FORCERESET_PARAM, &value);
+   	CU_ASSERT_EQUAL(rc_get, RBUS_ERROR_SUCCESS);
+    	const char* retrievedValue = NULL;
+    	retrievedValue = rbusValue_GetString(value, NULL);
+    	CU_ASSERT_STRING_EQUAL(retrievedValue, "");
+    	rbusValue_Release(value);
+    	webcfgdb_destroy(wd1);
+    	webcfgdb_destroy(wd2);
+    	webcfgdb_destroy(wd3);
+    	reset_successDocCount();
+    	reset_db_node();
+    	CU_ASSERT_FATAL( NULL == get_global_db_node());
+    	rbusEvent_Unsubscribe(handle, WEBCFG_SUBDOC_FORCERESET_PARAM);
+    	rbus_close(handle);
+    	webpaRbus_Uninit();
 }
 
-// Test case for publishSubdocResetEvent
-void test_publishSubdocResetEvent()
+#ifdef WAN_FAILOVER_SUPPORTED
+rbusError_t webcfgInterfaceSubscribeHandler(rbusHandle_t handle, rbusEventSubAction_t action, const char* eventName, rbusFilter_t filter, int32_t interval, bool* autoPublish)
 {
-	WEBCFG_STATUS ret = WEBCFG_FAILURE;  
-	ret = webconfigRbusInit("componentName");
-	if(ret != WEBCFG_SUCCESS)
-	{
-		CU_FAIL("rbus_open failed for subscribe_to_event");
-	}
-	regWebConfigDataModel();
-	int rc = rbusEvent_Subscribe(get_global_rbus_handle(), WEBCFG_SUBDOC_FORCERESET_PARAM, publishEventSuccessCallbackHandler, NULL, 0);
-	if(rc != RBUS_ERROR_SUCCESS)
-		CU_FAIL("subscribe_to_event onsubscribe event failed");
-	rbusError_t result = publishSubdocResetEvent("Doc1");
-	CU_ASSERT_EQUAL(result, RBUS_ERROR_SUCCESS);
-	webpaRbus_Uninit();
+    	(void)handle;
+    	(void)filter;
+    	(void)autoPublish;
+    	(void)interval;
+
+    	WebcfgInfo(
+        	"webcfgInterfaceSubscribeHandler called:\n" \
+        	"\taction=%s\n" \
+        	"\teventName=%s\n",
+        	action == RBUS_EVENT_ACTION_SUBSCRIBE ? "subscribe" : "unsubscribe",
+        	eventName);
+    
+    	if(!strcmp(WEBCFG_INTERFACE_PARAM, eventName))
+    	{
+        	int subscribe = action == RBUS_EVENT_ACTION_SUBSCRIBE ? 1 : 0;
+		if(subscribe) {
+			WebcfgInfo("provider: webcfgInterfaceSubscribeHandler subscribe\n");
+		}
+		else{
+			WebcfgInfo("provider: webcfgInterfaceSubscribeHandler unsubscribe\n");
+		}
+    	}
+    	else
+    	{
+        	WebcfgInfo("provider: webcfgInterfaceSubscribeHandler unexpected eventName %s\n", eventName);
+    	}
+
+    	return RBUS_ERROR_SUCCESS;
 }
 
 // Test for subscribeTo_CurrentActiveInterface_Event
-/*void test_subscribeTo_CurrentActiveInterface_Event()
+void test_subscribeTo_CurrentActiveInterface_Event()
 {
-	int rc = RBUS_ERROR_SUCCESS;
-	rc = subscribeTo_CurrentActiveInterface_Event();
+	webconfigRbusInit("consumerComponent");
+	int res = rbus_open(&handle, "providerComponent");
+    	if(res != RBUS_ERROR_SUCCESS)
+	{
+		CU_FAIL("rbus_open failed for providerComponent");
+	}
+
+	rbusDataElement_t webcfgInterfaceElement[1] = {
+		{WEBCFG_INTERFACE_PARAM, RBUS_ELEMENT_TYPE_PROPERTY, {NULL, NULL, NULL, NULL, webcfgInterfaceSubscribeHandler, NULL}}
+	};
+	rbusError_t ret = rbus_regDataElements(handle, 1, webcfgInterfaceElement);
+	CU_ASSERT_EQUAL(ret, RBUS_ERROR_SUCCESS);
+
+	int rc = subscribeTo_CurrentActiveInterface_Event();
 	CU_ASSERT_EQUAL(rc, RBUS_ERROR_SUCCESS);
-}*/
+
+	rbusError_t result = rbus_unregDataElements(handle, 1, webcfgInterfaceElement);
+	CU_ASSERT_EQUAL(result, RBUS_ERROR_SUCCESS);
+	rbus_close(handle);
+	webpaRbus_Uninit();
+}
+#endif
 
 void printTest()
 {
@@ -1356,51 +1425,52 @@ void printTest()
 
 void add_suites( CU_pSuite *suite )
 {
-    *suite = CU_add_suite( "tests", NULL, NULL );
-     CU_add_test( *suite, "test rbus_forcesync", test_setForceSync);
-     CU_add_test( *suite, "test rbus_forcesync_failure", test_setForceSync_failure);
-     CU_add_test( *suite, "test rbus_forcesync_json", test_setForceSync_json);
-     CU_add_test( *suite, "test isRbusEnabled_success", test_isRbusEnabled_success);
-     CU_add_test( *suite, "test get_global_isRbus_success", test_get_global_isRbus_success);
-     CU_add_test( *suite, "test isRfcEnabled_success", test_isRfcEnabled_success);
-     CU_add_test( *suite, "test isRfcEnabled_failure", test_isRfcEnabled_failure);
-     CU_add_test( *suite, "test isRbusInitialized_failure", test_isRbusInitialized_failure);
-     CU_add_test( *suite, "test mqttCMRbusInit_success", test_webconfigRbusInit_success);
-     CU_add_test( *suite, "test isRbusInitialized_success", test_isRbusInitialized_success);
-     CU_add_test( *suite, "test get_global_rbus_handle", test_get_global_rbus_handle);
-     CU_add_test( *suite, "test webpaRbus_Uninit", test_webpaRbus_Uninit);
-     CU_add_test( *suite, "test webcfgRfcSet_GetHandler", test_webcfgRfcSet_GetHandler);
-     CU_add_test( *suite, "test webcfgDataSet_GetHandler",test_webcfgDataSet_GetHandler);
-     CU_add_test( *suite, "test webcfgSupportedDocsSet_GetHandler", test_webcfgSupportedDocsSet_GetHandler);
-     CU_add_test( *suite, "test webcfgSupportedVersionSet_GetHandler", test_webcfgSupportedVersionSet_GetHandler);
-     CU_add_test( *suite, "test webcfgUrlSet_GetHandler", test_webcfgUrlSet_GetHandler);
-     CU_add_test( *suite, "test webcfgTelemetrySet_GetHandler", test_webcfgTelemetrySet_GetHandler);
-     CU_add_test( *suite, "test webcfgFrSet_GetHandler", test_webcfgFrSet_GetHandler);
-     CU_add_test( *suite, "test webcfgError_ToString", test_webcfgError_ToString);
-     CU_add_test( *suite, "test mapRbusToWdmpDataType", test_mapRbusToWdmpDataType);
-     CU_add_test( *suite, "test mapWdmpToRbusDataType", test_mapWdmpToRbusDataType);
-     CU_add_test( *suite, "test mapRbusToCcspStatus", test_mapRbusToCcspStatus);
-     CU_add_test( *suite, "test regWebConfigDataModel_success", test_regWebConfigDataModel_success);
-     CU_add_test( *suite, "test regWebConfigDataModel_failure", test_regWebConfigDataModel_failure);
-     CU_add_test( *suite, "test registerRBUSEventElement_success", test_registerRBUSEventElement_success);
-     CU_add_test( *suite, "test registerRBUSEventElement_failure", test_registerRBUSEventElement_failure);
-     CU_add_test( *suite, "test removeRBUSEventElement_success", test_removeRBUSEventElement_success);
-     CU_add_test( *suite, "test waitForUpstreamEventSubscribe", test_waitForUpstreamEventSubscribe);
-     CU_add_test( *suite, "test eventSubHandler", test_eventSubHandler);
-     CU_add_test( *suite, "test resetEventSubHandler", test_resetEventSubHandler);
-     CU_add_test( *suite, "test set_get_rbus_RfcEnable", test_set_get_rbus_RfcEnable);
-     CU_add_test( *suite, "test set_global_webconfig_url", test_set_global_webconfig_url);
-     CU_add_test( *suite, "test set_global_supplementary_url", test_set_global_supplementary_url);
-     CU_add_test( *suite, "test checkSubdocInDb", test_checkSubdocInDb);
-     CU_add_test( *suite, "test resetSubdocVersion", test_resetSubdocVersion);
-     CU_add_test( *suite, "test trigger_webcfg_forcedsync", test_trigger_webcfg_forcedsync);
-     CU_add_test( *suite, "test parseForceSyncJson", test_parseForceSyncJson);
-     CU_add_test( *suite, "test rbusWebcfgEventHandler", test_rbusWebcfgEventHandler);
-     CU_add_test( *suite, "test fetchMpBlobData", test_fetchMpBlobData);
-     CU_add_test( *suite, "test webcfg_util_method", test_webcfg_util_method);
-     CU_add_test( *suite, "test webcfgSubdocForceResetSet_GetHandler", test_webcfgSubdocForceResetSet_GetHandler);
-     CU_add_test( *suite, "test publishSubdocResetEvent", test_publishSubdocResetEvent);
-     //CU_add_test( *suite, "test subscribeTo_CurrentActiveInterface_Event", test_subscribeTo_CurrentActiveInterface_Event);
+	*suite = CU_add_suite( "tests", NULL, NULL );
+     	CU_add_test( *suite, "test rbus_forcesync", test_setForceSync);
+     	CU_add_test( *suite, "test rbus_forcesync_failure", test_setForceSync_failure);
+     	CU_add_test( *suite, "test rbus_forcesync_json", test_setForceSync_json);
+     	CU_add_test( *suite, "test isRbusEnabled_success", test_isRbusEnabled_success);
+     	CU_add_test( *suite, "test get_global_isRbus_success", test_get_global_isRbus_success);
+     	CU_add_test( *suite, "test isRfcEnabled_success", test_isRfcEnabled_success);
+     	CU_add_test( *suite, "test isRfcEnabled_failure", test_isRfcEnabled_failure);
+     	CU_add_test( *suite, "test isRbusInitialized_failure", test_isRbusInitialized_failure);
+     	CU_add_test( *suite, "test mqttCMRbusInit_success", test_webconfigRbusInit_success);
+     	CU_add_test( *suite, "test isRbusInitialized_success", test_isRbusInitialized_success);
+     	CU_add_test( *suite, "test get_global_rbus_handle", test_get_global_rbus_handle);
+     	CU_add_test( *suite, "test webpaRbus_Uninit", test_webpaRbus_Uninit);
+     	CU_add_test( *suite, "test webcfgRfcSet_GetHandler", test_webcfgRfcSet_GetHandler);
+     	CU_add_test( *suite, "test webcfgDataSet_GetHandler",test_webcfgDataSet_GetHandler);
+     	CU_add_test( *suite, "test webcfgSupportedDocsSet_GetHandler", test_webcfgSupportedDocsSet_GetHandler);
+     	CU_add_test( *suite, "test webcfgSupportedVersionSet_GetHandler", test_webcfgSupportedVersionSet_GetHandler);
+     	CU_add_test( *suite, "test webcfgUrlSet_GetHandler", test_webcfgUrlSet_GetHandler);
+     	CU_add_test( *suite, "test webcfgTelemetrySet_GetHandler", test_webcfgTelemetrySet_GetHandler);
+     	CU_add_test( *suite, "test webcfgFrSet_GetHandler", test_webcfgFrSet_GetHandler);
+     	CU_add_test( *suite, "test webcfgError_ToString", test_webcfgError_ToString);
+     	CU_add_test( *suite, "test mapRbusToWdmpDataType", test_mapRbusToWdmpDataType);
+     	CU_add_test( *suite, "test mapWdmpToRbusDataType", test_mapWdmpToRbusDataType);
+     	CU_add_test( *suite, "test mapRbusToCcspStatus", test_mapRbusToCcspStatus);
+     	CU_add_test( *suite, "test regWebConfigDataModel_success", test_regWebConfigDataModel_success);
+     	CU_add_test( *suite, "test regWebConfigDataModel_failure", test_regWebConfigDataModel_failure);
+     	CU_add_test( *suite, "test registerRBUSEventElement_success", test_registerRBUSEventElement_success);
+     	CU_add_test( *suite, "test registerRBUSEventElement_failure", test_registerRBUSEventElement_failure);
+     	CU_add_test( *suite, "test removeRBUSEventElement_success", test_removeRBUSEventElement_success);
+     	CU_add_test( *suite, "test waitForUpstreamEventSubscribe", test_waitForUpstreamEventSubscribe);
+     	CU_add_test( *suite, "test eventSubHandler", test_eventSubHandler);
+     	CU_add_test( *suite, "test resetEventSubHandler", test_resetEventSubHandler);
+     	CU_add_test( *suite, "test set_get_rbus_RfcEnable", test_set_get_rbus_RfcEnable);
+     	CU_add_test( *suite, "test set_global_webconfig_url", test_set_global_webconfig_url);
+     	CU_add_test( *suite, "test set_global_supplementary_url", test_set_global_supplementary_url);
+     	CU_add_test( *suite, "test checkSubdocInDb", test_checkSubdocInDb);
+     	CU_add_test( *suite, "test resetSubdocVersion", test_resetSubdocVersion);
+     	CU_add_test( *suite, "test trigger_webcfg_forcedsync", test_trigger_webcfg_forcedsync);
+     	CU_add_test( *suite, "test parseForceSyncJson", test_parseForceSyncJson);
+     	CU_add_test( *suite, "test rbusWebcfgEventHandler", test_rbusWebcfgEventHandler);
+     	CU_add_test( *suite, "test fetchMpBlobData", test_fetchMpBlobData);
+     	CU_add_test( *suite, "test webcfg_util_method", test_webcfg_util_method);
+     	CU_add_test( *suite, "test webcfgSubdocForceResetSet_GetHandler", test_webcfgSubdocForceResetSet_GetHandler);
+	#ifdef WAN_FAILOVER_SUPPORTED
+     	CU_add_test( *suite, "test subscribeTo_CurrentActiveInterface_Event", test_subscribeTo_CurrentActiveInterface_Event);
+	#endif 
 }
 
 /*----------------------------------------------------------------------------*/
